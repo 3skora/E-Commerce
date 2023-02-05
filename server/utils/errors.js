@@ -34,6 +34,7 @@ export const alreadyExistsError = (model, unique = "id") => {
 };
 
 export const errorMiddlerWare = (error, _req, res, _next) => {
+  console.log("errorMiddlerWare !!");
   if (error.statusCode) {
     return res.status(error.statusCode).json({
       success: false,

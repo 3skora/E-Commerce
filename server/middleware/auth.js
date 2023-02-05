@@ -4,7 +4,6 @@ import User from "../models/user.js";
 const isAuth = async (req, res, next) => {
   try {
     const header = req.get("Authorization");
-    console.log("🚀 ~ file: auth.js:7 ~ isAuth ~ header", header);
     if (!header) {
       const error = new Error("No Authorization Header is Supplied!");
       error.statusCode = 401;
@@ -16,16 +15,7 @@ const isAuth = async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
-    console.log("🚀 ~ file: auth.js:13 ~ isAuth ~ token", token);
 
-    // if (token === "p%7:,DMf9G,$:K?") {
-    //   req.user = {
-    //     email: "admin@admin.com",
-    //     isAdmin: true,
-    //   };
-    //   next();
-    //   return;
-    // }
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
 
     if (!decodedToken) {
@@ -36,6 +26,7 @@ const isAuth = async (req, res, next) => {
     req.user = await User.findById(decodedToken._id).exec();
     next();
   } catch (error) {
+    console.log("🚀 ~ file: auth.js:33 ~ isAuth ~ error");
     if (!error.statusCode) {
       error.message = "Invalid Token!";
       error.statusCode = 401;

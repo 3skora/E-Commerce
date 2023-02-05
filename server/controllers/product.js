@@ -1,6 +1,7 @@
 import Product from "../models/product.js";
 import { productValidation } from "../validators/product.js";
 import { raiseValidationError, passError } from "../utils/errors.js";
+import { isLoggedIn } from "../utils/auth.js";
 
 export const addProduct = async (req, res, next) => {
   try {
@@ -17,8 +18,10 @@ export const addProduct = async (req, res, next) => {
   }
 };
 
-export const getAllProducts = async (_req, res, next) => {
+export const getAllProducts = async (req, res, next) => {
   try {
+    // isLoggedIn(req);
+    // console.log("🚀 ~ file: product.js:21 ~ getAllProducts ~ req", req.user);
     const allProducts = await Product.find({}).exec();
     res.status(200).json({
       success: true,

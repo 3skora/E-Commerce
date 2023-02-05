@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import { userValidation } from "../validators/user.js";
+import { loginValidation, userValidation } from "../validators/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
@@ -12,7 +12,7 @@ import { isAdmin, raiseConfidentialError } from "../utils/auth.js";
 
 export const login = async (req, res, next) => {
   try {
-    const { error } = userValidation(req?.body);
+    const { error } = loginValidation(req?.body);
     if (error) raiseValidationError(error);
 
     const { email, password } = req?.body;
