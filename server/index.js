@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import productRouter from "./routes/product.js";
 import userRouter from "./routes/user.js";
+import cartRouter from "./routes/cart.js";
 import isAuth from "./middleware/auth.js";
 import { errorMiddlerWare } from "./utils/errors.js";
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(isAuth);
 app.use("/products", productRouter);
 app.use("/users", userRouter);
+app.use("/cart", cartRouter);
 
 // ==================== Home Route ====================
 app.get("/", (req, res) => {
