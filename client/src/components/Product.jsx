@@ -6,7 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-export default function MediaCard() {
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+export default function Product({ data }) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -16,13 +17,13 @@ export default function MediaCard() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Product 1
+          {data?.title}
         </Typography>
         <Typography gutterBottom variant="h6" component="div">
-          150$
+          {data?.price}$
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          this is description of product1
+          {data?.description}
         </Typography>
       </CardContent>
       {/* <CardActions> */}
@@ -30,7 +31,7 @@ export default function MediaCard() {
         <Button
           size="medium"
           variant="contained"
-          endIcon={<ShoppingCartIcon />}
+          endIcon={<AddShoppingCartIcon />}
         >
           Add to cart
         </Button>
