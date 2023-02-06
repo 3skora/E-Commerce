@@ -26,7 +26,7 @@ const isAuth = async (req, res, next) => {
     req.user = await User.findById(decodedToken._id).exec();
     next();
   } catch (error) {
-    console.log("🚀 ~ file: auth.js:33 ~ isAuth ~ error");
+    console.log("🚀 ~ file: auth.js:33 ~ isAuth ~ error", error);
     if (!error.statusCode) {
       error.message = "Invalid Token!";
       error.statusCode = 401;

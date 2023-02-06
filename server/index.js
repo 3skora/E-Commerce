@@ -13,7 +13,7 @@ const port = process.env.PORT;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(isAuth);
+// app.use(isAuth);
 app.use("/products", productRouter);
 app.use("/users", userRouter);
 
