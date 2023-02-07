@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import Cart from "../models/cart.js";
 import { loginValidation, userValidation } from "../validators/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -43,7 +44,6 @@ export const login = async (req, res, next) => {
 
 export const signUp = async (req, res, next) => {
   try {
-    // isAdmin(req);
     const { error } = userValidation(req?.body);
     if (error) raiseValidationError(error);
 
@@ -55,11 +55,17 @@ export const signUp = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    const newCart = new Cart();
+
     const newUser = new User({
       ...req.body,
       password: hashedPassword,
+      cartId: newCart?._id,
     });
     const savedUser = await newUser.save();
+    newCart.userId = savedUser._id;
+
+    await newCart.save();
     return res.status(201).json({
       success: true,
       data: savedUser,
