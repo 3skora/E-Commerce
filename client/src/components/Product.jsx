@@ -27,7 +27,7 @@ export default function Product({ data }) {
   const addToCartBtn = () => {
     return (
       <>
-        <div className="mb-3" onClick={handleClick}>
+        <div className="mb-3" onClick={handleInc}>
           <Button
             size="medium"
             variant="contained"
@@ -58,9 +58,6 @@ export default function Product({ data }) {
     );
   };
 
-  const handleClick = async () => {
-    const res = await addToCart(data?._id, quantity + 1);
-  };
   const handleInc = async () => {
     setQuantity(quantity + 1);
     const res = await addToCart(data?._id, quantity + 1);
