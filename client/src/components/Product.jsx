@@ -1,13 +1,74 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { addToCart, viewMyCart } from "../APIs/cartAPIs.js";
 export default function Product({ data }) {
+  const [quantity, setQuantity] = React.useState(0);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const res = await viewMyCart();
+      const cartItems = res?.data?.items;
+      for (const item of cartItems) {
+        if (item.productId._id == data?._id) {
+          setQuantity(item.quantity);
+          return;
+        }
+      }
+    }
+    fetchData();
+  }, []);
+
+  const addToCartBtn = () => {
+    return (
+      <>
+        <div className="mb-3" onClick={handleClick}>
+          <Button
+            size="medium"
+            variant="contained"
+            endIcon={<AddShoppingCartIcon />}
+          >
+            Add to cart
+          </Button>
+        </div>
+      </>
+    );
+  };
+
+  const quantityBtn = () => {
+    return (
+      <>
+        <div className="mb-3">
+          <Button
+            variant="contained"
+            onClick={() => {
+              quantity > 0 && setQuantity(quantity - 1);
+            }}
+          >
+            -
+          </Button>
+          <Typography variant="h6" m={5} component="span">
+            {quantity}
+          </Typography>
+          <Button variant="contained" onClick={() => setQuantity(quantity + 1)}>
+            +
+          </Button>
+        </div>
+      </>
+    );
+  };
+
+  const handleClick = async () => {
+    const res = await addToCart(data?._id);
+    // setAllProducts(res?.data);
+    console.log(`${data?.title} with id ${data?._id} added to cart`);
+    console.log(res?.data);
+  };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -26,17 +87,8 @@ export default function Product({ data }) {
           {data?.description}
         </Typography>
       </CardContent>
-      {/* <CardActions> */}
-      <div className="mb-3">
-        <Button
-          size="medium"
-          variant="contained"
-          endIcon={<AddShoppingCartIcon />}
-        >
-          Add to cart
-        </Button>
-      </div>
-      {/* </CardActions> */}
+
+      {quantity == 0 ? addToCartBtn() : quantityBtn()}
     </Card>
   );
 }

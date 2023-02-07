@@ -1,4 +1,4 @@
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { viewMyCart } from "../../APIs/cartAPIs.js";
 import CartItem from "./CartItem.jsx";
@@ -18,25 +18,34 @@ export default function MyCart() {
 
   return (
     <>
-      <Container maxWidth="xl">
-        <Grid container rowSpacing={6} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          {cartItems?.map((item) => {
-            return (
-              <React.Fragment key={item.productId._id}>
-                <Grid item xs={3}>
-                  <CartItem data={item} />
-                </Grid>
-              </React.Fragment>
-            );
-          })}
-        </Grid>
-      </Container>
+      {cartItems && (
+        <>
+          <Container maxWidth="xl">
+            <Grid
+              container
+              rowSpacing={6}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              {cartItems?.map((item) => {
+                return (
+                  <React.Fragment key={item.productId._id}>
+                    <Grid item xs={3}>
+                      <CartItem data={item} />
+                    </Grid>
+                  </React.Fragment>
+                );
+              })}
+            </Grid>
+            <Typography>Total Price : {totalPrice}</Typography>
+          </Container>
 
-      <div onClick={() => (window.location.href = "/checkout")}>
-        <Button variant="contained" color="primary">
-          Order Now
-        </Button>
-      </div>
+          <div onClick={() => (window.location.href = "/checkout")}>
+            <Button variant="contained" color="primary">
+              Order Now
+            </Button>
+          </div>
+        </>
+      )}
     </>
   );
 }

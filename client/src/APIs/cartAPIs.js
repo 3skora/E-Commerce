@@ -18,9 +18,13 @@ export const viewMyCart = async () => {
   }
 };
 
-export const addToCart = async () => {
+export const addToCart = async (productId) => {
   try {
-    const res = await axios.post(`${endPoint}/cart/${userId}`, auth);
+    const res = await axios.post(
+      `${endPoint}/cart/${userId}`,
+      { productId },
+      auth
+    );
     return res?.data;
   } catch (err) {
     console.log(err.response.data);
