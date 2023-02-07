@@ -8,6 +8,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { addToCart, viewMyCart } from "../APIs/cartAPIs.js";
 export default function Product({ data }) {
   const [quantity, setQuantity] = React.useState(0);
+  console.log("🚀 ~ file: Product.jsx:11 ~ Product ~ quantity", quantity);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -43,18 +44,13 @@ export default function Product({ data }) {
     return (
       <>
         <div className="mb-3">
-          <Button
-            variant="contained"
-            onClick={() => {
-              quantity > 0 && setQuantity(quantity - 1);
-            }}
-          >
+          <Button variant="contained" onClick={handleDec}>
             -
           </Button>
           <Typography variant="h6" m={5} component="span">
             {quantity}
           </Typography>
-          <Button variant="contained" onClick={() => setQuantity(quantity + 1)}>
+          <Button variant="contained" onClick={handleInc}>
             +
           </Button>
         </div>
@@ -63,10 +59,15 @@ export default function Product({ data }) {
   };
 
   const handleClick = async () => {
-    const res = await addToCart(data?._id);
-    // setAllProducts(res?.data);
-    console.log(`${data?.title} with id ${data?._id} added to cart`);
-    console.log(res?.data);
+    const res = await addToCart(data?._id, quantity + 1);
+  };
+  const handleInc = async () => {
+    setQuantity(quantity + 1);
+    const res = await addToCart(data?._id, quantity + 1);
+  };
+  const handleDec = async () => {
+    quantity > 0 && setQuantity(quantity - 1);
+    const res = await addToCart(data?._id, quantity - 1);
   };
 
   return (

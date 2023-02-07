@@ -28,12 +28,20 @@ export const addToCart = async (req, res, next) => {
     const { userId } = req?.params;
     const { productId, quantity } = req?.body;
 
-    const updatedCart = await Cart.findOneAndUpdate(
+    await Cart.findOneAndUpdate(
       { userId },
-      //   { $set: req?.body },
-      { $addToSet: { items: [req?.body] } },
+      { $pull: { items: { productId } } },
       { new: true, runValidators: true, useFindAndModify: true }
     ).exec();
+
+    let updatedCart;
+    if (quantity != 0) {
+      updatedCart = await Cart.findOneAndUpdate(
+        { userId },
+        { $addToSet: { items: [req?.body] } },
+        { new: true, runValidators: true, useFindAndModify: true }
+      ).exec();
+    }
 
     return res.status(201).json({
       success: true,

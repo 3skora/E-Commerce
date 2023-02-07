@@ -18,11 +18,12 @@ export const viewMyCart = async () => {
   }
 };
 
-export const addToCart = async (productId) => {
+export const addToCart = async (productId, quantity) => {
   try {
+    console.log("🚀 ~ file: cartAPIs.js:22 ~ addToCart ~ quantity", quantity);
     const res = await axios.post(
       `${endPoint}/cart/${userId}`,
-      { productId },
+      { productId, quantity },
       auth
     );
     return res?.data;
