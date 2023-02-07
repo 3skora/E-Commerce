@@ -20,7 +20,6 @@ export const viewMyCart = async () => {
 
 export const addToCart = async (productId, quantity) => {
   try {
-    console.log("🚀 ~ file: cartAPIs.js:22 ~ addToCart ~ quantity", quantity);
     const res = await axios.post(
       `${endPoint}/cart/${userId}`,
       { productId, quantity },
@@ -35,11 +34,11 @@ export const addToCart = async (productId, quantity) => {
 export const pay = async () => {
   try {
     const res = await axios.post(
-      `${endPoint}/pay/${userId}`,
+      `${endPoint}/pay`,
       { amount: 1 * 100 }
       //   auth
     );
-    return res?.data;
+    return res;
   } catch (err) {
     console.log(err.response.data);
   }

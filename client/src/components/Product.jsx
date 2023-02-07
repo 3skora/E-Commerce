@@ -6,9 +6,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { addToCart, viewMyCart } from "../APIs/cartAPIs.js";
+
+const token = localStorage.getItem("token");
+
 export default function Product({ data }) {
   const [quantity, setQuantity] = React.useState(0);
-  console.log("🚀 ~ file: Product.jsx:11 ~ Product ~ quantity", quantity);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -59,6 +61,7 @@ export default function Product({ data }) {
   };
 
   const handleInc = async () => {
+    if (!token) window.location.href = "/login";
     setQuantity(quantity + 1);
     const res = await addToCart(data?._id, quantity + 1);
   };

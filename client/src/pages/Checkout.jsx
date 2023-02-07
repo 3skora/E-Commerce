@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { pay } from "../APIs/cartAPIs.js";
 import axios from "axios";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+const token = localStorage.getItem("token");
 
 export default function Checkout() {
   const stripe = useStripe();
@@ -56,6 +57,8 @@ export default function Checkout() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
+
+    if (!token) window.location.href = "/login";
     setProcessing(true);
     setSuccess("Processing...");
 
@@ -71,9 +74,7 @@ export default function Checkout() {
     };
 
     try {
-      const paymentIntent = await axios.post("http://localhost:8001/pay", {
-        amount: 1 * 100,
-      });
+      const paymentIntent = await pay();
 
       const paymentMethodObj = await stripe.createPaymentMethod({
         type: "card",
