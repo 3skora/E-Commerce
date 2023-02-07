@@ -2,6 +2,7 @@ import Cart from "../models/cart.js";
 import { addToCartValidation } from "../validators/cart.js";
 import { raiseValidationError, passError } from "../utils/errors.js";
 import { isLoggedIn } from "../utils/auth.js";
+import Product from "../models/product.js";
 
 export const viewCart = async (req, res, next) => {
   try {
@@ -28,17 +29,38 @@ export const addToCart = async (req, res, next) => {
     const { userId } = req?.params;
     const { productId, quantity } = req?.body;
 
-    await Cart.findOneAndUpdate(
-      { userId },
-      { $pull: { items: { productId } } },
-      { new: true, runValidators: true, useFindAndModify: true }
-    ).exec();
+    const { price } = await Product.findById(productId).exec();
+
+    const foundCart = await Cart.findOne({
+      userId,
+      // "items.productId": productId,
+      // items: { $elemMatch: { productId } },
+    }).exec();
+
+    let filteredProduct = foundCart?.items?.filter(
+      (item) => item.productId == productId
+    );
+
+    const prevQuantity = filteredProduct[0]?.quantity || 0;
+    if (prevQuantity != 0) {
+      await Cart.findOneAndUpdate(
+        { userId },
+        {
+          $pull: { items: { productId } },
+          $inc: { totalPrice: -price * prevQuantity },
+        },
+        { new: true, runValidators: true, useFindAndModify: true }
+      ).exec();
+    }
 
     let updatedCart;
     if (quantity != 0) {
       updatedCart = await Cart.findOneAndUpdate(
         { userId },
-        { $addToSet: { items: [req?.body] } },
+        {
+          $addToSet: { items: [req?.body] },
+          $inc: { totalPrice: price * quantity },
+        },
         { new: true, runValidators: true, useFindAndModify: true }
       ).exec();
     }
