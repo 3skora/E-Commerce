@@ -4,6 +4,7 @@ import cors from "cors";
 import productRouter from "./routes/product.js";
 import userRouter from "./routes/user.js";
 import cartRouter from "./routes/cart.js";
+import orderRouter from "./routes/order.js";
 import isAuth from "./middleware/auth.js";
 import { errorMiddlerWare } from "./utils/errors.js";
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/products", productRouter);
 app.use("/users", userRouter);
 app.use("/cart", cartRouter);
+app.use("/pay", orderRouter);
 
 // ==================== Home Route ====================
 app.get("/", (req, res) => {

@@ -31,7 +31,6 @@ export default function Login() {
       password,
     };
     const res = await login(data);
-    console.log("🚀 ~ file: Login.jsx:34 ~ handelSubmit ~ res", res);
     if (res?.data?.success) window.location.href = "/";
     else handelErrorMessage(res);
   };

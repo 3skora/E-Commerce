@@ -10,10 +10,9 @@ const auth = {
 
 export const login = async (data) => {
   try {
-    console.log("hamada");
     const res = await axios.post(`${endPoint}/users/login`, data);
-    console.log("🚀 ~ file: loginAPI.js:15 ~ login ~ res", res?.data);
     localStorage.setItem("token", res?.data?.token);
+    localStorage.setItem("userId", res?.data?.userId);
     return res;
   } catch (err) {
     if (err?.response?.data?.message)

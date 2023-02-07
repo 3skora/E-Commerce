@@ -10,7 +10,10 @@ import Checkout from "./pages/Checkout.jsx";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+const stripeKey =
+  "pk_test_51MY0KlJs4OSzk0Saf5Vkdj4HlTOjxxOOJ9lyhbQH13cn9wsgZ5NwJTTHykPg1zv2ipc9OfLSGYwaGFDaDZuCxn3P00ASrayEad";
+const stripePromise = loadStripe(stripeKey);
+// const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 function App() {
   return (

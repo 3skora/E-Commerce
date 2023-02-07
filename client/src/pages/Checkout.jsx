@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../APIs/loginAPI.js";
+import { pay } from "../APIs/cartAPIs.js";
 import axios from "axios";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
@@ -47,6 +47,10 @@ export default function Checkout() {
 
   const handleChange = (e) => {
     const { value, name } = e.target;
+    console.log(
+      "🚀 ~ file: Checkout.jsx:51 ~ handleChange ~ name",
+      e.target.name
+    );
     setCredentials({ ...credentials, [name]: value });
   };
 
@@ -67,8 +71,8 @@ export default function Checkout() {
     };
 
     try {
-      const paymentIntent = await axios.post("http://localhost:5000/payments", {
-        // amount: products.price * 100,
+      const paymentIntent = await axios.post("http://localhost:8001/pay", {
+        amount: 1 * 100,
       });
 
       const paymentMethodObj = await stripe.createPaymentMethod({
@@ -133,6 +137,7 @@ export default function Checkout() {
               </label>
               <input
                 type="email"
+                name="email"
                 id="email"
                 class="form-control"
                 value={credentials.email}
@@ -147,6 +152,7 @@ export default function Checkout() {
               <input
                 type="text"
                 id="name"
+                name="name"
                 class="form-control"
                 value={credentials.name}
                 onChange={handleChange}
@@ -160,6 +166,7 @@ export default function Checkout() {
               <input
                 type="text"
                 id="address"
+                name="address"
                 class="form-control"
                 value={credentials.address}
                 onChange={handleChange}
@@ -173,6 +180,7 @@ export default function Checkout() {
               <input
                 type="text"
                 id="phone"
+                name="phone"
                 class="form-control"
                 value={credentials.phone}
                 onChange={handleChange}

@@ -28,27 +28,36 @@ const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export default function CartItem() {
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
-
+export default function CartItem({ data }) {
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-            Product1
+            {data?.productId?.title}
           </Typography>
           <Demo>
             <List>
               <ListItem>
-                <ListItemText primary="Description" secondary={"This"} />
+                <ListItemText
+                  primary="Description"
+                  secondary={data?.productId?.description}
+                />
               </ListItem>
               <ListItem>
-                <ListItemText primary="category" secondary={"food"} />
+                <ListItemText
+                  primary="category"
+                  secondary={data?.productId?.category}
+                />
               </ListItem>
               <ListItem>
-                <ListItemText primary="price" secondary={"150$"} />
+                <ListItemText
+                  primary="price"
+                  secondary={`${data?.productId?.price}$`}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="quantity" secondary={data?.quantity} />
               </ListItem>
             </List>
           </Demo>

@@ -1,34 +1,34 @@
 import { Button, Container, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { viewMyCart } from "../../APIs/cartAPIs.js";
 import CartItem from "./CartItem.jsx";
 
 export default function MyCart() {
-  //   const [allProducts, setAllProducts] = useState();
+  const [cartItems, setCartItems] = useState();
+  const [totalPrice, setTotalPrice] = useState();
 
-  //   useEffect(() => {
-  //     async function fetchData() {
-  //       const res = await getAllProducts();
-  //       setAllProducts(res?.data);
-  //     }
-  //     fetchData();
-  //   }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await viewMyCart();
+      setCartItems(res?.data?.items);
+      setTotalPrice(res?.data?.totalPrice);
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
       <Container maxWidth="xl">
         <Grid container rowSpacing={6} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <CartItem />
-          <CartItem />
-
-          {/* {allProducts?.map((product) => {
+          {cartItems?.map((item) => {
             return (
-              <React.Fragment key={product._id}>
+              <React.Fragment key={item.productId._id}>
                 <Grid item xs={3}>
-                  <Product data={product} />
+                  <CartItem data={item} />
                 </Grid>
               </React.Fragment>
             );
-          })} */}
+          })}
         </Grid>
       </Container>
 
